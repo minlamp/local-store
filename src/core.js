@@ -3,10 +3,13 @@
 //默认存储3天
 const ThreeDays = 1000 * 60 * 60 * 24 * 3
 
-const createItem = (value, expires=Date.now() + ThreeDays) => JSON.stringify({
-    value,
-    expires
-})
+const createItem = (value, expires= ThreeDays) => {
+    const expiresTime = Date.now() + expires
+    return JSON.stringify({
+        value,
+        expires: expiresTime
+    })
+}
 
 //暂时支持sessionStorage, localStorage, cookie请先实现setItem, getItem, removeItem, clear
 class EasyStore{
@@ -38,7 +41,8 @@ class EasyStore{
             return null
         }
         
-        return this.cache[key] = item
+        this.cache[key] = item
+        return item.value
     }
 
     removeItem(key){
